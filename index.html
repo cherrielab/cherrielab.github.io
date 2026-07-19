@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="AI Agent for Slack — your workspace supercharged with AI. Google Drive integration, smart Q&A, web search, and more. Free during promotion.">
+  <title>AI Agent for Slack</title>
+  <style>
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    html{font-size:16px;scroll-behavior:smooth}
+    body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","Noto Sans",Helvetica,Arial,sans-serif;color:#1d1c1d;background:#f8f8f8;line-height:1.6;-webkit-font-smoothing:antialiased}
+    a{color:#4A154B;text-decoration:none}
+    a:hover{text-decoration:underline}
+    img{max-width:100%;height:auto}
+    .container{max-width:1100px;margin:0 auto;padding:0 24px}
+    section{padding:80px 0}
+    .badge{display:inline-block;background:#e8e0e8;color:#4A154B;font-size:0.8rem;font-weight:600;padding:4px 12px;border-radius:12px;letter-spacing:0.3px}
+
+    nav{background:#fff;border-bottom:1px solid #e8e8e8;padding:16px 0;position:sticky;top:0;z-index:100}
+    nav .container{display:flex;align-items:center;justify-content:space-between}
+    nav .logo{font-weight:700;font-size:1.1rem;color:#1d1c1d;display:flex;align-items:center;gap:8px}
+    nav .logo svg{width:24px;height:24px}
+    nav .logo span{color:#4A154B}
+    nav .nav-links{display:flex;gap:24px;align-items:center;font-size:0.9rem;color:#616061}
+    nav .nav-links a{color:#616061}
+    nav .nav-links a:hover{color:#4A154B}
+    @media(max-width:600px){nav .nav-links{display:none}}
+
+    .hero{background:linear-gradient(135deg,#4A154B 0%,#611f69 50%,#7c2b7e 100%);color:#fff;text-align:center;padding:100px 0 90px}
+    .hero h1{font-size:3rem;font-weight:800;line-height:1.15;margin-bottom:16px}
+    .hero .subtitle{font-size:1.3rem;opacity:0.9;margin-bottom:12px}
+    .hero .free-badge{display:inline-block;background:rgba(255,255,255,0.15);backdrop-filter:blur(4px);border:1px solid rgba(255,255,255,0.3);padding:8px 20px;border-radius:20px;font-size:0.95rem;font-weight:600;margin-bottom:32px;letter-spacing:0.3px}
+    .hero .add-to-slack{margin-top:8px;transition:opacity 0.15s}
+    .hero .add-to-slack:hover{opacity:0.85}
+    .hero .add-to-slack img{height:48px;width:auto}
+    @media(max-width:600px){.hero{padding:70px 0 60px}.hero h1{font-size:2.2rem}.hero .subtitle{font-size:1.1rem}}
+
+    .features{padding:80px 0}
+    .features h2,.how-it-works h2,.changelog h2{text-align:center;font-size:1.8rem;font-weight:700;margin-bottom:48px;color:#1d1c1d}
+    .features-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px}
+    .feature-card{background:#fff;border:1px solid #e8e8e8;border-radius:8px;padding:32px 28px;transition:box-shadow 0.2s,transform 0.2s}
+    .feature-card:hover{box-shadow:0 4px 12px rgba(0,0,0,0.08);transform:translateY(-2px)}
+    .feature-card .icon{width:40px;height:40px;border-radius:8px;display:flex;align-items:center;justify-content:center;margin-bottom:16px;font-size:1.3rem}
+    .feature-card .icon.purple{background:#f0eaf0}
+    .feature-card .icon.green{background:#e0f0ec}
+    .feature-card .icon.blue{background:#e4edf5}
+    .feature-card .icon.gold{background:#f5f0e0}
+    .feature-card h3{font-size:1.1rem;font-weight:700;margin-bottom:8px}
+    .feature-card p{font-size:0.92rem;color:#616061;line-height:1.55}
+    .feature-card .dev-tag{display:inline-block;background:#f0eaf0;color:#4A154B;font-size:0.72rem;font-weight:700;padding:2px 10px;border-radius:10px;margin-top:10px;letter-spacing:0.3px}
+    .feature-card.drive{background:#fff;border-color:#d0c4d0}
+    @media(max-width:900px){.features-grid{grid-template-columns:repeat(2,1fr)}}
+    @media(max-width:550px){.features-grid{grid-template-columns:1fr}.feature-card{padding:24px 20px}}
+
+    .how-it-works{background:#fff;padding:80px 0}
+    .steps{display:flex;gap:40px;justify-content:center;max-width:800px;margin:0 auto}
+    .step{text-align:center;flex:1}
+    .step .num{display:flex;align-items:center;justify-content:center;width:48px;height:48px;border-radius:50%;background:#4A154B;color:#fff;font-size:1.2rem;font-weight:700;margin:0 auto 16px}
+    .step h4{font-weight:700;margin-bottom:6px}
+    .step p{font-size:0.92rem;color:#616061}
+    .step .arrow{display:none}
+    @media(min-width:600px){.step{position:relative}.step:not(:last-child)::after{content:"→";position:absolute;right:-28px;top:8px;font-size:1.5rem;color:#d0c0d0}}
+    @media(max-width:600px){.steps{flex-direction:column;gap:28px;align-items:center}}
+
+    .changelog{background:#f8f8f8;padding:80px 0}
+    .changelog-list{max-width:680px;margin:0 auto}
+    .changelog-item{padding:20px 0;border-bottom:1px solid #e8e8e8}
+    .changelog-item:last-child{border-bottom:none}
+    .changelog-item .tag{display:inline-block;font-size:0.72rem;font-weight:700;padding:2px 10px;border-radius:10px;margin-right:8px;letter-spacing:0.3px;vertical-align:middle}
+    .changelog-item .tag.new{background:#e0f0ec;color:#007a5a}
+    .changelog-item .tag.beta{background:#f0eaf0;color:#4A154B}
+    .changelog-item .tag.dev{background:#f5f0e0;color:#8a6e00}
+    .changelog-item p{font-size:0.95rem;color:#1d1c1d;line-height:1.5}
+    .changelog-item p small{color:#616061;font-size:0.85rem}
+
+    footer{background:#1d1c1d;color:#b0b0b0;text-align:center;padding:40px 0;font-size:0.85rem}
+    footer a{color:#b0b0b0}
+    footer a:hover{color:#fff}
+    footer .footer-links{display:flex;justify-content:center;gap:24px;margin-bottom:12px;flex-wrap:wrap}
+  </style>
+</head>
+<body>
+
+  <nav>
+    <div class="container">
+      <div class="logo">
+        <svg viewBox="0 0 24 24" fill="none" stroke="#4A154B" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l3 6 6 3-6 3-3 6-3-6-6-3 6-3z"/></svg>
+        <span>AI Agent</span>
+      </div>
+      <div class="nav-links">
+        <a href="#features">Features</a>
+        <a href="#how-it-works">How It Works</a>
+        <a href="#whats-new">What's New</a>
+      </div>
+    </div>
+  </nav>
+
+  <section class="hero">
+    <div class="container">
+      <div class="free-badge">&#9733; Free during promotion period</div>
+      <h1>AI Agent for Slack</h1>
+      <p class="subtitle">Your workspace, supercharged with AI.</p>
+      <div class="add-to-slack">
+        <a href="https://slack.com/oauth/v2/authorize?client_id=11509492655474.11543435288912&scope=app_mentions:read,channels:history,channels:read,chat:write,commands,groups:history,groups:read,im:history,im:read,im:write,team:read,users:read" target="_blank" rel="noopener noreferrer">
+          <img src="https://platform.slack-edge.com/img/add_to_slack.png" srcset="https://platform.slack-edge.com/img/add_to_slack.png 1x, https://platform.slack-edge.com/img/add_to_slack@2x.png 2x" alt="Add to Slack">
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <section class="features" id="features">
+    <div class="container">
+      <h2>Features</h2>
+      <div class="features-grid">
+
+        <div class="feature-card drive">
+          <div class="icon green">&#x1F50D;</div>
+          <h3>Google Drive Search</h3>
+          <p>Full-text search across all your Drive files. Find documents, spreadsheets, and presentations instantly without leaving Slack.</p>
+        </div>
+
+        <div class="feature-card drive">
+          <div class="icon purple">&#x270F;&#xFE0F;</div>
+          <h3>Google Drive Editing</h3>
+          <p>Read, write, and manage Google Drive files directly from Slack. Create documents, update content, and organize your drive.</p>
+        </div>
+
+        <div class="feature-card">
+          <div class="icon blue">&#x1F4AC;</div>
+          <h3>Smart Q&amp;A</h3>
+          <p>Ask questions and get answers powered by LLM. Handles complex queries with context-aware responses.</p>
+        </div>
+
+        <div class="feature-card">
+          <div class="icon gold">&#x1F310;</div>
+          <h3>Web Search</h3>
+          <p>Search the web and fetch page content without leaving your Slack workspace. Real-time information at your fingertips.</p>
+        </div>
+
+        <div class="feature-card">
+          <div class="icon purple">&#x1F4DA;</div>
+          <h3>Skills System</h3>
+          <p>Extend the agent with custom skills. Drop a SKILL.md in the workspace and the agent learns new capabilities automatically.</p>
+        </div>
+
+        <div class="feature-card">
+          <div class="icon green">&#x2699;&#xFE0F;</div>
+          <h3>File &amp; Code Execution</h3>
+          <p>Read, write files and execute code in isolated workspace per channel.</p>
+          <span class="dev-tag">IN DEVELOPMENT</span>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <section class="how-it-works" id="how-it-works">
+    <div class="container">
+      <h2>How It Works</h2>
+      <div class="steps">
+        <div class="step">
+          <div class="num">1</div>
+          <h4>Install</h4>
+          <p>Click the Add to Slack button and authorize the app for your workspace.</p>
+        </div>
+        <div class="step">
+          <div class="num">2</div>
+          <h4>Invite</h4>
+          <p><code>/invite @agent</code> to any channel or open a direct message.</p>
+        </div>
+        <div class="step">
+          <div class="num">3</div>
+          <h4>Ask</h4>
+          <p>Mention the bot or send a DM. It responds with streaming answers.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="changelog" id="whats-new">
+    <div class="container">
+      <h2>What's New</h2>
+      <div class="changelog-list">
+
+        <div class="changelog-item">
+          <span class="tag new">NEW</span>
+          <p>Google Drive search and editing — full-text search across all Drive files, read, write, and manage documents directly from Slack.</p>
+        </div>
+
+        <div class="changelog-item">
+          <span class="tag beta">BETA</span>
+          <p>Web search &amp; page fetch — search the web and retrieve page content in real time. Fully rendered in native Slack blocks.</p>
+        </div>
+
+        <div class="changelog-item">
+          <span class="tag new">NEW</span>
+          <p>Streaming responses — the agent now streams answers token-by-token so long responses appear progressively rather than all at once.</p>
+        </div>
+
+        <div class="changelog-item">
+          <span class="tag dev">COMING</span>
+          <p>File &amp; code execution — execute code and manage files in an isolated per-channel workspace. Under active development.</p>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <div class="container">
+      <div class="footer-links">
+        <a href="#features">Features</a>
+        <a href="#how-it-works">How It Works</a>
+        <a href="#whats-new">What's New</a>
+        <a href="https://slack.com/oauth/v2/authorize?client_id=11509492655474.11543435288912&scope=app_mentions:read,channels:history,channels:read,chat:write,commands,groups:history,groups:read,im:history,im:read,im:write,team:read,users:read">Install</a>
+      </div>
+      <p>&copy; 2026 AI Agent for Slack</p>
+    </div>
+  </footer>
+
+</body>
+</html>
