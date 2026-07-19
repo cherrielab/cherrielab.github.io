@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://cherrielab.github.io/sitemap.xml
